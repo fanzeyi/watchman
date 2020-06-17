@@ -23,8 +23,8 @@ jobs:
     needs: prepare
     runs-on: ubuntu-18.04
     steps:
-    - name: Mock Linux build
-      run: mkdir -p _artifacts/linux/bin && echo "linux" > _artifacts/linux/bin/watchman
+    - name: Mock macOS build
+      run: false
     - uses: actions/upload-artifact@master
       with:
         name: watchman-linux-${{ needs.prepare.outputs.release_name }}
@@ -46,7 +46,7 @@ jobs:
     runs-on: windows-2016
     steps:
     - name: Mock Windows build
-      run: mkdir -p _artifacts/windows/bin && echo "windows" > _artifacts/windows/bin/watchman.cmd
+      run: false
     - uses: actions/upload-artifact@master
       with:
         name: watchman-windows-${{ needs.prepare.outputs.release_name }}
