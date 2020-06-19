@@ -48,8 +48,8 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ needs.prepare.outputs.upload_url }}
-        asset_path: ./watchman-${{ needs.prepare.outputs.release_name }}-linux.zip
-        asset_name: watchman-${{ needs.prepare.outputs.release_name }}-linux.zip
+        asset_path: ./watchman-${{ needs.prepare.outputs.release }}-linux.zip
+        asset_name: watchman-${{ needs.prepare.outputs.release }}-linux.zip
         asset_content_type: application/zip
 
   mac-build:
@@ -74,8 +74,8 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ needs.prepare.outputs.upload_url }}
-        asset_path: ./watchman-${{ needs.prepare.outputs.release_name }}-mac.zip
-        asset_name: watchman-${{ needs.prepare.outputs.release_name }}-mac.zip
+        asset_path: ./watchman-${{ needs.prepare.outputs.release }}-mac.zip
+        asset_name: watchman-${{ needs.prepare.outputs.release }}-mac.zip
         asset_content_type: application/zip
 
   windows-build:
@@ -96,13 +96,13 @@ jobs:
     - name: Test watchman
       run: for ($i = 0; $i -lt 3; $i++) { python build/fbcode_builder/getdeps.py --allow-system-packages test --src-dir=. watchman; if ($LastExitCode -eq 0) { break } }
     - name: Package watchman
-      run: mv _artifacts/windows watchman-windows && zip -r watchman-${{ needs.prepare.outputs.release }}-windows.zip watchman-windows/
+      run: mv _artifacts/windows watchman-windows && Compress-Archive -DestinationPath "watchman-${{ needs.prepare.outputs.release }}-windows.zip" -Path watchman-windows/
     - name: Upload Windows release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ needs.prepare.outputs.upload_url }}
-        asset_path: ./watchman-${{ needs.prepare.outputs.release_name }}-windows.zip
-        asset_name: watchman-${{ needs.prepare.outputs.release_name }}-windows.zip
+        asset_path: ./watchman-${{ needs.prepare.outputs.release }}-windows.zip
+        asset_name: watchman-${{ needs.prepare.outputs.release }}-windows.zip
         asset_content_type: application/zip
