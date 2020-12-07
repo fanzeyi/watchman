@@ -26,54 +26,6 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
 
-  linux-build:
-    continue-on-error: true
-    needs: prepare
-    runs-on: ubuntu-18.04
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build watchman
-      run: python3 build/fbcode_builder/getdeps.py build --src-dir=. watchman  --project-install-prefix watchman:/usr/local
-    - name: Copy artifacts
-      run: python3 build/fbcode_builder/getdeps.py fixup-dyn-deps --strip --src-dir=. watchman _artifacts/linux  --project-install-prefix watchman:/usr/local --final-install-prefix /usr/local
-    - name: Test watchman
-      run: python3 build/fbcode_builder/getdeps.py test --src-dir=. watchman  --project-install-prefix watchman:/usr/local
-    - name: Package watchman
-      run: mv _artifacts/linux "watchman-${{ needs.prepare.outputs.release }}-linux" && zip -r watchman-${{ needs.prepare.outputs.release }}-linux.zip "watchman-${{ needs.prepare.outputs.release }}-linux/"
-    - name: Upload Linux release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ needs.prepare.outputs.upload_url }}
-        asset_path: ./watchman-${{ needs.prepare.outputs.release }}-linux.zip
-        asset_name: watchman-${{ needs.prepare.outputs.release }}-linux.zip
-        asset_content_type: application/zip
-
-  mac-build:
-    continue-on-error: true
-    needs: prepare
-    runs-on: macOS-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build watchman
-      run: python3 build/fbcode_builder/getdeps.py --allow-system-packages build --src-dir=. watchman  --project-install-prefix watchman:/usr/local
-    - name: Copy artifacts
-      run: python3 build/fbcode_builder/getdeps.py --allow-system-packages fixup-dyn-deps --src-dir=. watchman _artifacts/mac  --project-install-prefix watchman:/usr/local --final-install-prefix /usr/local
-    - name: Test watchman
-      run: python3 build/fbcode_builder/getdeps.py --allow-system-packages test --src-dir=. watchman  --project-install-prefix watchman:/usr/local
-    - name: Package watchman
-      run: mv _artifacts/mac "watchman-${{ needs.prepare.outputs.release }}-macos" && zip -r watchman-${{ needs.prepare.outputs.release }}-macos.zip "watchman-${{ needs.prepare.outputs.release }}-macos/"
-    - name: Upload macOS release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ needs.prepare.outputs.upload_url }}
-        asset_path: ./watchman-${{ needs.prepare.outputs.release }}-macos.zip
-        asset_name: watchman-${{ needs.prepare.outputs.release }}-macos.zip
-        asset_content_type: application/zip
-
   windows-build:
     continue-on-error: true
     needs: prepare
@@ -81,7 +33,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Export boost environment
-      run: "echo ::set-env name=BOOST_ROOT::%BOOST_ROOT_1_69_0%"
+      run: "echo BOOST_ROOT=%BOOST_ROOT_1_69_0% >> $GITHUB_ENV"
       shell: cmd
     - name: Fix Git config
       run: git config --system core.longpaths true
