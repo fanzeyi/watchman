@@ -38,7 +38,7 @@ jobs:
     needs: [prepare, mac-build]
     runs-on: ubuntu-latest
     steps:
-      - uses: fanzeyi/bump-homebrew-formula-action@v1
+      - uses: fanzeyi/bump-homebrew-formula-action@v1.10
         with:
           formula-name: watchman
           formula-path: watchman.rb
