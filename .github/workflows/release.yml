@@ -38,9 +38,10 @@ jobs:
     needs: [prepare, mac-build]
     runs-on: ubuntu-latest
     steps:
-      - uses: mislav/bump-homebrew-formula-action@v1
+      - uses: fanzeyi/bump-homebrew-formula-action@v1
         with:
           formula-name: watchman
+          formula-path: watchman.rb
           homebrew-tap: fanzeyi/homebrew-fb
           base-branch: master
           download-url: https://github.com/facebook/watchman/releases/download/${{ needs.prepare.outputs.release }}/watchman-${{ needs.prepare.outputs.release }}-macos.zip
