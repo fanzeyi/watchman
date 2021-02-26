@@ -35,7 +35,7 @@ jobs:
       run: echo hi
   
   homebrew-bump:
-    needs: mac-build
+    needs: [prepare, mac-build]
     runs-on: ubuntu-latest
     steps:
       - uses: mislav/bump-homebrew-formula-action@v1
