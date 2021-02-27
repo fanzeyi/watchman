@@ -17,14 +17,14 @@ jobs:
       env:
         TAG: ${{ github.ref }}
       run: python -c "print('::set-output name=name::' + '$TAG'.lstrip('refs/tags/'))"
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
+    # - name: Create release
+    #   id: create_release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ github.ref }}
+    #     release_name: ${{ github.ref }}
 
   mac-build:
     continue-on-error: true
@@ -44,7 +44,7 @@ jobs:
           formula-path: watchman.rb
           homebrew-tap: fanzeyi/homebrew-fb
           base-branch: master
-          download-url: https://github.com/facebook/watchman/releases/download/${{ needs.prepare.outputs.release }}/watchman-${{ needs.prepare.outputs.release }}-macos.zip
+          download-url: https://github.com/fanzeyi/watchman/releases/download/${{ needs.prepare.outputs.release }}/watchman-${{ needs.prepare.outputs.release }}-macos.zip
           commit-message: bump watchman to ${{ needs.prepare.outputs.release }}
         env:
           COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
