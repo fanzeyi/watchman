@@ -42,9 +42,9 @@ jobs:
         with:
           formula-name: watchman
           formula-path: watchman.rb
-          homebrew-tap: fanzeyi/homebrew-fb
+          homebrew-tap: facebook/homebrew-fb
           base-branch: master
-          download-url: https://github.com/fanzeyi/watchman/releases/download/${{ needs.prepare.outputs.release }}/watchman-${{ needs.prepare.outputs.release }}-macos.zip
+          download-url: https://github.com/facebook/watchman/releases/download/${{ needs.prepare.outputs.release }}/watchman-${{ needs.prepare.outputs.release }}-macos.zip
           commit-message: bump watchman to ${{ needs.prepare.outputs.release }}
         env:
           COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
